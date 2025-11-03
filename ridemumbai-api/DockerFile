@@ -7,7 +7,7 @@ WORKDIR /app
 
 # Copy the Maven wrapper and pom.xml
 COPY mvnw .
-RUN chmod +x mvnw  # <--- ADD THIS LINE
+RUN chmod +x mvnw
 COPY .mvn .mvn
 COPY pom.xml .
 
@@ -25,7 +25,8 @@ FROM eclipse-temurin:17-jre
 WORKDIR /app
 
 # Copy the built .jar file from the 'builder' stage
-COPY --from=builder /app/target/ridemumbai_api-0.0.1-SNAPSHOT.jar ./app.jar
+# CORRECTED FILENAME: ridemumbai-api-0.0.1-SNAPSHOT.jar
+COPY --from=builder /app/target/ridemumbai-api-0.0.1-SNAPSHOT.jar ./app.jar
 
 # Expose the port Spring Boot runs on (default is 8080)
 EXPOSE 8080
