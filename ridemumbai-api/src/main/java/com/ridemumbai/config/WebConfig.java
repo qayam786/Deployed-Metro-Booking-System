@@ -14,8 +14,8 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/**") // Allow all endpoints under /api/
-                        // .allowedOrigins("http://localhost:5173","https://ridemumbaimetro.netlify.app/") // Allow your frontend URL
-                        .allowedOriginPatterns("*") // This allows all domains
+                        .allowedOrigins("http://localhost:5173","https://ridemumbaimetro.netlify.app/") // Allow your frontend URL
+                        // .allowedOriginPatterns("*") // This allows all domains
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
