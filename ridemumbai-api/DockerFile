@@ -1,0 +1,33 @@
+# Stage 1: Build the application
+# Use the official Maven image with Java 17 (required for Spring Boot 3)
+FROM maven:3.9.6-eclipse-temurin-17 AS builder
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the Maven wrapper and pom.xml
+COPY mvnw .
+COPY .mvn .mvn
+COPY pom.xml .
+
+# Download dependencies
+RUN ./mvnw dependency:go-offline
+
+# Copy the rest of the source code and build the application
+COPY src src
+RUN ./mvnw package -DskipTests
+
+# Stage 2: Create the final runtime image
+# Use a smaller JRE image for the final container
+FROM eclipse-temurin:17-jre
+
+WORKDIR /app
+
+# Copy the built .jar file from the 'builder' stage
+COPY --from=builder /app/target/ridemumbai_api-0.0.1-SNAPSHOT.jar ./app.jar
+
+# Expose the port Spring Boot runs on (default is 8080)
+EXPOSE 8080
+
+# Command to run the application
+ENTRYPOINT ["java", "-jar", "app.jar"]
